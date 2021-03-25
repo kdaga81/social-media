@@ -10,5 +10,6 @@ router.post("/signup",userSignupValidator, signup);
 router.post("/signin",signin);
 router.get("/signout", signout);
 router.param("userId", userById);
+ 
 
 module.exports = router;
