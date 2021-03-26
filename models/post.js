@@ -13,7 +13,7 @@ const postSchema = new mongoose.Schema({
         minlength:4,
         maxlength:2000
     },
-    image:{
+    photo:{
         data : Buffer,
         contentType : String
     },
