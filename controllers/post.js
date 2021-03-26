@@ -3,7 +3,9 @@ const formidable = require("formidable");
 const fs = require("fs");
 
 exports.getPost = (req,res)=>{
-    const posts = Post.find().select("_id title body")
+    const posts = Post.find()
+                    .populate("postedBy","_id name")
+                    .select("_id title body")
                     .then(posts=>{
                         res.json({posts:posts});
                     })
@@ -20,6 +22,8 @@ exports.createPost = (req,res)=>{
         });
 
         let post =new Post(fields);
+        req.profile.hashed_password= undefined;
+        req.profile.salt= undefined;
         post.postedBy = req.profile;
         if(files.photo){
             post.photo.data = fs.readFileSync(files.photo.path);
@@ -42,3 +46,31 @@ exports.createPost = (req,res)=>{
         });
     });
 };
+
+exports.postsByUser = (req, res) =>{
+    Post.find({postedBy : req.profile._id})
+        .populate("postedBy","_id name")
+        .sort("_created")
+        .exec((err,posts)=>{
+            if(err){
+                return res.status(400).json({
+                    error : err
+                });
+            }
+            res.json(posts);
+        })
+}
+
+exports.postById = (req, res, next, id)=>{
+    Post.findById(id)
+        .populate("postedBy","_id name")
+        .exec((err, post)=>{
+            if(err)
+            return res.status(400).json({
+                error : err
+            });
+
+            req.post = post;
+            next();
+        });
+}
