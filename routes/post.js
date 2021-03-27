@@ -7,7 +7,7 @@ const {createPostValidator} = require("../validator/index");
 
 const router = express.Router();
 
-router.get("/" , requireSignin, getPost);
+router.get("/posts" , requireSignin, getPost);
 router.post("/post/new/:userId", requireSignin, createPost, createPostValidator);
 router.get("/posts/by/:userId", requireSignin ,postsByUser);
 router.delete("/post/:postId", requireSignin, isPoster, deletePost);
