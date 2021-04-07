@@ -20,9 +20,9 @@ mongoose.connection.on("error", err=>{
 })
 
 // bring in routes
-const postRoutes = require("../routes/post");
-const authRoutes = require("../routes/auth");
-const userRoutes = require("../routes/user");
+const postRoutes = require("./routes/post");
+const authRoutes = require("./routes/auth");
+const userRoutes = require("./routes/user");
 
 //middleware
 app.use(morgan("dev"));
